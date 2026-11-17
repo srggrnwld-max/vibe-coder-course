@@ -153,11 +153,16 @@ class PasswordManagerApp:
             print("Мастер-пароль установлен.")
             return True
 
-        password = getpass.getpass("Мастер-пароль: ")
-        if not MasterPassword.verify(password, stored_salt, stored_hash):
-            print("Неверный мастер-пароль.")
-            return False
-        return True
+        print("Введите мастер-пароль. Символы на экране не отображаются — это нормально.")
+        for attempt in range(3):
+            password = getpass.getpass("Мастер-пароль, затем Enter: ").strip()
+            if MasterPassword.verify(password, stored_salt, stored_hash):
+                return True
+            remaining = 2 - attempt
+            if remaining:
+                print(f"Неверный мастер-пароль. Осталось попыток: {remaining}.")
+        print("Три неверные попытки. Программа завершена.")
+        return False
 
     def add_password(self) -> None:
         service = input("Название сервиса: ").strip()
