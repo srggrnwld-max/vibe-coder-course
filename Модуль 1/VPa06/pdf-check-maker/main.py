@@ -1,6 +1,7 @@
 """Учебный PDF-чек-мейкер: CSV → HTML-шаблон → отдельный PDF на заказ."""
 
 import csv
+import webbrowser
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -63,7 +64,7 @@ def main():
         pdf_path = OUTPUT_DIR / f"check-{order['order_id']}.pdf"
         save_pdf(render_check(env, order), pdf_path)
         print(pdf_path.name)
-
+        webbrowser.open(pdf_path.as_uri())
 
 if __name__ == "__main__":
     main()
